@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tagName"
+            type="String"/>
+    </data>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_tiny"
+        android:layout_marginEnd="@dimen/spacing_tiny"
+        android:layout_marginRight="@dimen/spacing_tiny"
+        android:background="@color/gray_200"
+        android:padding="@dimen/spacing_tiny"
+        android:text="@{tagName}"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_tiny"
+        app:textAllLowers="@{true}"
+        tools:text="Android"/>
+
+</layout>

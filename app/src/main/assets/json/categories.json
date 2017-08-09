@@ -1,0 +1,240 @@
+[
+  {
+    "id": 1,
+    "count": 1,
+    "description": "",
+    "link": "http://techdevfan.com/category/admin/",
+    "name": "Admin",
+    "slug": "admin",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "tdfan_category_meta": {
+      "posts": [
+        {
+          "ID": 1,
+          "title": "Hello world! Welcome to TechDevFan",
+          "excerpt": ""
+        }
+      ]
+    },
+    "featured_image_src": false,
+    "_links": {
+      "self": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories/1"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/posts?categories=1"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "count": 1,
+    "description": "",
+    "link": "http://techdevfan.com/category/android/",
+    "name": "Android",
+    "slug": "android",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "tdfan_category_meta": {
+      "posts": [
+        {
+          "ID": 55,
+          "title": "Understanding Retrofit 2 @Query and @Path",
+          "excerpt": ""
+        }
+      ]
+    },
+    "featured_image_src": "http://techdevfan.com/wp-content/uploads/2017/07/IO_Friday_Morning_MR_DSC05416_scaled.png",
+    "_links": {
+      "self": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories/2"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/posts?categories=2"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "count": 0,
+    "description": "",
+    "link": "http://techdevfan.com/category/tips-and-tricks/",
+    "name": "Tips and tricks",
+    "slug": "tips-and-tricks",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "tdfan_category_meta": {
+      "posts": []
+    },
+    "featured_image_src": false,
+    "_links": {
+      "self": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories/4"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/posts?categories=4"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "count": 0,
+    "description": "",
+    "link": "http://techdevfan.com/category/web-hosting/",
+    "name": "Web Hosting",
+    "slug": "web-hosting",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "tdfan_category_meta": {
+      "posts": []
+    },
+    "featured_image_src": false,
+    "_links": {
+      "self": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories/5"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/posts?categories=5"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "count": 1,
+    "description": "",
+    "link": "http://techdevfan.com/category/wordpress/",
+    "name": "Wordpress",
+    "slug": "wordpress",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "tdfan_category_meta": {
+      "posts": [
+        {
+          "ID": 20,
+          "title": "Why you should use self hosted blog instead of Medium",
+          "excerpt": ""
+        }
+      ]
+    },
+    "featured_image_src": false,
+    "_links": {
+      "self": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories/3"
+        }
+      ],
+      "collection": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "http://techdevfan.com/wp-json/wp/v2/posts?categories=3"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]

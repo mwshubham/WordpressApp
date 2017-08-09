@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_logo_dimen">150dp</dimen>
+    <!--SPACING-->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_generic">8dp</dimen>
+    <dimen name="spacing_activity">16dp</dimen>
+
+    <!--TEXT SIZES-->
+    <dimen name="text_size_tiny">9sp</dimen>
+
+    <!--navigation drawer dimens-->
+    <dimen name="drawer_item_dimen">48dp</dimen>
+    <dimen name="drawer_vertical_padding">24dp</dimen>
+    <dimen name="drawer_item_icon">56dp</dimen>
+    <dimen name="drawer_item_icon_padding">12dp</dimen>
+    <dimen name="drawer_item_icon_padding_right">32dp</dimen>
+    <dimen name="drawer_padding">8dp</dimen>
+</resources>

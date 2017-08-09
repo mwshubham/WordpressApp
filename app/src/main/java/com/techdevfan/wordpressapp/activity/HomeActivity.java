@@ -1,0 +1,180 @@
+package com.techdevfan.wordpressapp.activity;
+
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.View;
+import android.widget.Toast;
+
+import com.techdevfan.wordpressapp.R;
+import com.techdevfan.wordpressapp.adapter.NavigationRvAdapter;
+import com.techdevfan.wordpressapp.connection.ApiConnection;
+import com.techdevfan.wordpressapp.connection.CustomObserver;
+import com.techdevfan.wordpressapp.database.AppDatabase;
+import com.techdevfan.wordpressapp.databinding.ActivityHomeBinding;
+import com.techdevfan.wordpressapp.fragment.PostListFragment;
+import com.techdevfan.wordpressapp.handler.ItemNavigationRvHandler;
+import com.techdevfan.wordpressapp.helper.EnumHelper;
+import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
+import com.techdevfan.wordpressapp.model.CategoryData;
+import com.techdevfan.wordpressapp.model.post.PostData;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_AD_ENABLED;
+import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_SHOW_CUSTOM_PAGES;
+
+public class HomeActivity extends BaseActivity {
+    @SuppressWarnings("unused")
+    private static final String TAG = "HomeActivity";
+    public ActivityHomeBinding mBinding;
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        setSupportActionBar(mBinding.toolbar);
+        setUpViewPager();
+        setUpNavigationDrawer();
+        if (SharedPreferenceHelper.getSharedPreferenceBoolean(this, KEY_IS_AD_ENABLED, false)) {
+            setUpAdMob();
+        }
+
+        if (SharedPreferenceHelper.getSharedPreferenceBoolean(this, KEY_IS_SHOW_CUSTOM_PAGES, false)) {
+            ApiConnection.getPages(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<PostData>>(this) {
+                @Override
+                public void onNext(@NonNull List<PostData> pageDatas) {
+                    super.onNext(pageDatas);
+                    AppDatabase.getAppDatabase(HomeActivity.this).getPostDao().insertAll(pageDatas);
+                    mBinding.pagesRv.setAdapter(new NavigationRvAdapter(HomeActivity.this, EnumHelper.NavItemType.TYPE_PAGE, pageDatas));
+                }
+            });
+        }
+
+    }
+
+    private void setUpAdMob() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mBinding.bannerAdView.loadAd(adRequest);
+        mBinding.bannerAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mBinding.viewPager.setPadding(0, 0, 0, mBinding.bannerAdView.getHeight());
+            }
+        });
+    }
+
+    private void setUpViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(PostListFragment.newInstance("", EnumHelper.IdType.CATEGORY_ID), getString(R.string.latest));
+
+        List<CategoryData> categoryDatas = AppDatabase.getAppDatabase(this).getCategoryDao().getAll();
+        for (int categoryPos = 0; categoryPos < categoryDatas.size(); categoryPos++) {
+            adapter.addFragment(PostListFragment.newInstance(categoryDatas.get(categoryPos).getId(), EnumHelper.IdType.CATEGORY_ID), categoryDatas.get(categoryPos).getName());
+        }
+        mBinding.viewPager.setAdapter(adapter);
+        mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
+        mBinding.viewPager.setOffscreenPageLimit(4);
+    }
+
+    private void setUpNavigationDrawer() {
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        mBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        mBinding.categoriesRecyclerView.setAdapter(new NavigationRvAdapter(this, EnumHelper.NavItemType.TYPE_CATEGORY, null));
+        mBinding.itemFavorite.setName(getString(R.string.favorite));
+        mBinding.itemFavorite.setPosition(-1);
+        mBinding.itemFavorite.setHandler(new ItemNavigationRvHandler(this, EnumHelper.NavItemType.TYPE_FAVORITE, null));
+    }
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        ViewPagerAdapter(FragmentManager supportFragmentManager) {
+            super(supportFragmentManager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        if (mBinding.bannerAdView != null) {
+            mBinding.bannerAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mBinding.bannerAdView != null) {
+            mBinding.bannerAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mBinding.bannerAdView != null) {
+            mBinding.bannerAdView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.msg_press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+    }
+}

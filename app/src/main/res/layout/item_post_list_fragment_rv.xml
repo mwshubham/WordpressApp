@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.techdevfan.wordpressapp.database.AppDatabase"/>
+
+        <variable
+            name="data"
+            type="com.techdevfan.wordpressapp.model.post.PostData"/>
+
+        <variable
+            name="handler"
+            type="com.techdevfan.wordpressapp.handler.ItemPostListFragmentRvHandler"/>
+
+        <variable
+            name="isFavoritePost"
+            type="Boolean"/>
+
+        <import type="com.techdevfan.wordpressapp.helper.SharedPreferenceHelper"/>
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_tiny"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:onClick="@{()->handler.viewPostDetails()}"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_activity">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_generic"
+                android:layout_marginRight="@dimen/spacing_generic"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    app:htmlText="@{data.title.rendered}"
+                    tools:text="Why you should use self hosted blog instead of Medium"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    app:htmlText="@{data.excerpt.rendered}"
+                    tools:text="WordPress is a framework, not just a writing platform. No doubt, Medium is a good platform for writing blogs. But only if your intentions are steady. "/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:imageUrl="@{data.featuredImageThumbnailStandard}"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_placeholder"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_generic">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/tags_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:orientation="horizontal"
+                    app:flexWrap="wrap"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_generic"
+                        android:layout_marginRight="@dimen/spacing_generic"
+                        android:maxLines="1"
+                        android:text="@{data.getFormatedDate(context)}"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="5 days ago"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@{data.getMinTimeToRead(context)}"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:visibility="@{SharedPreferenceHelper.getSharedPreferenceBoolean(context, SharedPreferenceHelper.KEY_IS_SHOW_MIN_READ_TIME, false)}"
+                        tools:text="4 min read"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <ToggleButton
+                android:id="@+id/bookmark_toogle_btn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="@dimen/spacing_generic"
+                android:background="@drawable/btn_toggle_bookmark_bg"
+                android:checked="@{isFavoritePost}"
+                android:textOff=""
+                android:textOn=""/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="image"
+            type="int"/>
+
+        <variable
+            name="title"
+            type="String"/>
+
+        <variable
+            name="subtitle"
+            type="String"/>
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/spacing_activity"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            app:srcCompat="@{image}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_sentiment_dissatisfied_accent_48px"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:text="@{title}"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            tools:text="No Data Found"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{subtitle}"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="May be go back and try different keyword ?"/>
+
+
+    </LinearLayout>
+
+</layout>

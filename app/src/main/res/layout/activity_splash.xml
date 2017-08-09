@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorPrimary"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/app_logo_iv"
+            android:layout_width="@dimen/app_logo_dimen"
+            android:layout_height="@dimen/app_logo_dimen"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/spacing_activity"
+            app:srcCompat="@drawable/ic_app_logo"
+            tools:ignore="ContentDescription"/>
+
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/app_logo_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/spacing_activity"
+            android:text="@string/techdevfan_with_style"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_tv"
+            android:layout_centerHorizontal="true"
+            />
+
+
+    </RelativeLayout>
+</layout>

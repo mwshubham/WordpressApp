@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
+            name="name"
+            type="String"/>
+
+        <variable
+            name="count"
+            type="String"/>
+
+        <variable
+            name="handler"
+            type="com.techdevfan.wordpressapp.handler.ItemNavigationRvHandler"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/drawer_item_dimen"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:onClick="@{()->handler.performAction(position)}"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/drawer_vertical_padding"
+        android:paddingLeft="@dimen/drawer_vertical_padding"
+        android:paddingRight="@dimen/drawer_vertical_padding"
+        android:paddingStart="@dimen/drawer_vertical_padding">
+
+        <ImageView
+            android:layout_width="@dimen/drawer_item_icon"
+            android:layout_height="@dimen/drawer_item_dimen"
+
+            android:paddingBottom="@dimen/drawer_item_icon_padding"
+            android:paddingEnd="@dimen/drawer_item_icon_padding_right"
+            android:paddingLeft="0dp"
+            android:paddingRight="@dimen/drawer_item_icon_padding_right"
+            android:paddingStart="0dp"
+            android:paddingTop="@dimen/drawer_item_icon_padding"
+            android:visibility="gone"
+            tools:ignore="ContentDescription"
+            tools:src="@android:drawable/ic_menu_camera"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical|start"
+                android:maxLines="1"
+                android:text="@{name}"
+                android:textDirection="anyRtl"
+                android:textStyle="bold"
+                tools:ignore="UnusedAttribute"
+                tools:text="Android"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@{count}"
+            tools:ignore="UnusedAttribute"
+            tools:text="45"/>
+
+
+    </LinearLayout>
+</layout>
