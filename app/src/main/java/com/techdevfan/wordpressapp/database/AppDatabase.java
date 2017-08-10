@@ -42,7 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static final String COLUMN_NAME_DESCRIPTION = "description";
     public static final String COLUMN_NAME_NAME = "name";
     public static final String COLUMN_NAME_COUNT = "count";
-    /*POST DATE KEYS*/
+    /*POST DATA KEYS*/
     public static final String COLUMN_NAME_DATE = "date";
     public static final String COLUMN_NAME_TITLE = "title";
     public static final String COLUMN_NAME_CONTENT = "content";

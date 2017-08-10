@@ -87,7 +87,7 @@ public class HomeActivity extends BaseActivity {
         }
         mBinding.viewPager.setAdapter(adapter);
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
-        mBinding.viewPager.setOffscreenPageLimit(4);
+        mBinding.viewPager.setOffscreenPageLimit(2);
     }
 
     private void setUpNavigationDrawer() {

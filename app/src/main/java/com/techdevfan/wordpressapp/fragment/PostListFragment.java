@@ -80,6 +80,7 @@ public class PostListFragment extends BaseFragment {
             public void onSubscribe(@NonNull Disposable d) {
                 super.onSubscribe(d);
                 mBinding.animationProgressBar.setVisibility(View.VISIBLE);
+                mBinding.animationProgressBar.playAnimation();
             }
 
             @Override
@@ -93,6 +94,7 @@ public class PostListFragment extends BaseFragment {
             public void onComplete() {
                 super.onComplete();
                 mBinding.animationProgressBar.setVisibility(View.GONE);
+                mBinding.animationProgressBar.cancelAnimation();
             }
         };
 

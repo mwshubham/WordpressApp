@@ -54,6 +54,16 @@
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="@dimen/spacing_activity"
+            app:lottie_fileName="json/lottie_preloader.json"
+            app:lottie_loop="true"/>
+
+
     </android.support.design.widget.CoordinatorLayout>
 
 

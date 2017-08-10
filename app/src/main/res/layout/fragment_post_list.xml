@@ -28,12 +28,6 @@
             app:lottie_fileName="json/lottie_preloader.json"
             app:lottie_loop="true"/>
 
-        <FrameLayout
-            android:id="@+id/empty_fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
     </FrameLayout>
 
 

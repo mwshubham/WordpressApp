@@ -2,11 +2,15 @@ package com.techdevfan.wordpressapp.activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.techdevfan.wordpressapp.R;
@@ -43,7 +47,26 @@ public class PostDetailActivity extends BaseActivity {
             mBinding.webView.getSettings().setBuiltInZoomControls(true);
             mBinding.webView.getSettings().setDisplayZoomControls(false);
             mBinding.webView.getSettings().setUseWideViewPort(true);
-            /*todo webview donot show last line of the html content. */
+//            mBinding.webView.getSettings().setJavaScriptEnabled(true);
+
+            mBinding.webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageStarted(WebView webView, String url, Bitmap favicon) {
+                    super.onPageStarted(webView, url, favicon);
+                    webView.setVisibility(View.GONE);
+                    mBinding.animationProgressBar.playAnimation();
+                    mBinding.animationProgressBar.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onPageFinished(WebView webView, String url) {
+                    super.onPageFinished(webView, url);
+                    webView.setVisibility(View.VISIBLE);
+                    mBinding.animationProgressBar.setVisibility(View.GONE);
+                    mBinding.animationProgressBar.cancelAnimation();
+
+                }
+            });
             mBinding.webView.loadDataWithBaseURL(null, getHtmlData(), "text/html", "utf-8", null);
         }
     }
