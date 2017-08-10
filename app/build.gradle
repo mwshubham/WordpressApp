@@ -16,6 +16,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 /*Full Desc: https://stackoverflow.com/questions/44322178/room-schema-export-directory-is-not-provided-to-the-annotation-processor-so-we*/
@@ -80,5 +81,7 @@ dependencies {
 
     compile "android.arch.persistence.room:runtime:$arch_persistance_version"
     annotationProcessor "android.arch.persistence.room:compiler:$arch_persistance_version"
+
+    compile "com.android.support:multidex:$multidex_version"
 }
 apply plugin: 'com.google.gms.google-services'

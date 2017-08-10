@@ -17,6 +17,7 @@ buildscript {
     ext.google_version = '11.0.4'
     ext.flex_layout_version = '0.3.0'
     ext.arch_persistance_version = '1.0.0-alpha5'
+    ext.multidex_version = '1.0.1'
 
 
     repositories {

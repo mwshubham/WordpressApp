@@ -49,10 +49,10 @@ public interface ApiInterface {
     Observable<List<PostData>> getPages();
 
     /*CUSTOM ENDPOINTS*/
-    @GET("wp-json/inventopress/v1/config")
+    @GET("wp-json/techdevfan/v1/config")
     Observable<ConfigData> getConfigData();
 
-    @GET("wp-json/inventopress/v1/favoritePost")
+    @GET("wp-json/techdevfan/v1/favoritePost")
     Observable<List<PostData>> getFavoritePost(@Query("postIds") String postIds);
 
 

@@ -1,16 +1,17 @@
 package com.techdevfan.wordpressapp;
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
-import com.facebook.stetho.Stetho;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by shubham on 22/7/17.
  */
 
-public class WordpressApplication extends Application {
+public class WordpressApplication extends MultiDexApplication {
     @SuppressWarnings("unused")
     private static final String TAG = "WordpressApplication";
 
