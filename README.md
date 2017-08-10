@@ -16,5 +16,5 @@ replace this with your base URL of your website
 
 ```
 You can download https://github.com/mwshubham/WP-TDF-PLUGIN
-Copy the folder techdevfan and paste it in your plugin wordpress backend **/wp-content/plugins**
+Copy the folder techdevfan and paste it in your plugin wordpress backend /wp-content/plugins
 ```
