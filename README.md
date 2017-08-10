@@ -6,7 +6,7 @@ Convert any Wordpress Site into Native Mobile App
 ## Set-up
 
 ```
-FileName: ApplicationConstant
+FileName: PATH_TO_YOUR_COPY_OF_PROJECT/WordpressApp/app/src/main/java/com/techdevfan/wordpressapp/constant/ApplicationConstant.java
 
 String BASE_URL = "http://www.techdevfan.com/";
 replace this with your base URL of your website
