@@ -41,6 +41,8 @@ import static com.techdevfan.wordpressapp.constant.ApplicationConstant.WP_POST_U
 import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_AD_ENABLED;
 import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_SHOW_CUSTOM_PAGES;
 
+
+/*todo post list not visible on the basis of tags...*/
 public class HomeActivity extends BaseActivity {
     @SuppressWarnings("unused")
     private static final String TAG = "HomeActivity";
@@ -52,10 +54,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         setSupportActionBar(mBinding.toolbar);
-
-
         loadPosts(1);
-
         setUpViewPager();
         setUpNavigationDrawer();
         if (SharedPreferenceHelper.getSharedPreferenceBoolean(this, KEY_IS_AD_ENABLED, false)) {
@@ -65,7 +64,6 @@ public class HomeActivity extends BaseActivity {
         if (SharedPreferenceHelper.getSharedPreferenceBoolean(this, KEY_IS_SHOW_CUSTOM_PAGES, false)) {
             loadCustomPages();
         }
-
     }
 
     private void loadPosts(int page) {
@@ -88,11 +86,14 @@ public class HomeActivity extends BaseActivity {
 
             @Override
             public void onError(@NonNull Throwable e) {
+
                 if (e instanceof HttpException) {
                     HttpException httpException = (HttpException) e;
                     Response response = httpException.response();
                     /*HANDLING ERROR : {"code":"rest_post_invalid_page_number","message":"The page number requested is larger than the number of pages available.","data":{"status":400}}*/
-                    if (response.code() != 400) {
+                    if (response.code() == 400) {
+                        mBinding.mainProgressBar.setVisibility(View.GONE);
+                    } else {
                         super.onError(e);
                     }
                 } else {
@@ -231,7 +232,7 @@ public class HomeActivity extends BaseActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, R.string.msg_press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }

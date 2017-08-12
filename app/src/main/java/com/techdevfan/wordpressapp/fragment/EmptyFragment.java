@@ -30,8 +30,6 @@ public class EmptyFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
-
-    /*todo check https://materialdesignicons.com/ for "empty" icons */
     public static EmptyFragment newInstance(int drawableId, String title, String subtitle) {
         Bundle args = new Bundle();
         args.putInt(BUNDLE_KEY_DRAWABLE_ID, drawableId);

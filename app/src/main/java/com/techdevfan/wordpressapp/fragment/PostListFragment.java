@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +72,6 @@ public class PostListFragment extends BaseFragment {
         return fragment;
     }
 
-
-    /*todo show only those categories where count of post >=1 or alternatively show empty page.*/
-    /*todo create a configuration page [wordpress backend] to choose the application configuration e.g. show empty page or hide categories in the application.*/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -105,8 +101,8 @@ public class PostListFragment extends BaseFragment {
             mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), favoritePostDatas));
 
             if (favoriteDatas.isEmpty()) {
-                Log.i(TAG, "onActivityCreated: NO FAVORITE POST EXIST !!!!!!!!!!!!!!!!");
-                /*todo handle this situation*/
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, EmptyFragment.newInstance(R.drawable.ic_sentiment_dissatisfied_accent_48px, getString(R.string.favorite_empty_container_title),
+                        getString(R.string.favorite_empty_container_subtitle))).commit();
             } else {
                 ApiConnection.getFavoritePost(getContext(), favoritePostIds).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<PostData>>(getContext()) {
                     @Override

@@ -40,6 +40,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_splash);
         Log.i(TAG, "token: " + FirebaseInstanceId.getInstance().getToken());
+        /*todo add support for all application without backend module..*/
         ApiConnection.getConfigData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ConfigData>(this) {
             @Override
             public void onNext(@NonNull ConfigData configData) {
@@ -94,7 +95,7 @@ public class SplashActivity extends BaseActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, R.string.msg_press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }
