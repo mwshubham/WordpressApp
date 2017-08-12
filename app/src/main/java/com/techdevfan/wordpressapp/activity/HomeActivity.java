@@ -92,7 +92,7 @@ public class HomeActivity extends BaseActivity {
                     Response response = httpException.response();
                     /*HANDLING ERROR : {"code":"rest_post_invalid_page_number","message":"The page number requested is larger than the number of pages available.","data":{"status":400}}*/
                     if (response.code() == 400) {
-                        mBinding.mainProgressBar.setVisibility(View.GONE);
+                        onComplete();
                     } else {
                         super.onError(e);
                     }

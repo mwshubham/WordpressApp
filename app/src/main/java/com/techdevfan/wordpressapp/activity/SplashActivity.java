@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.techdevfan.wordpressapp.R;
 import com.techdevfan.wordpressapp.connection.ApiConnection;
 import com.techdevfan.wordpressapp.connection.CustomObserver;
@@ -16,7 +17,6 @@ import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
 import com.techdevfan.wordpressapp.model.CategoryData;
 import com.techdevfan.wordpressapp.model.ConfigData;
 import com.techdevfan.wordpressapp.model.TagData;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
@@ -24,6 +24,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 /**
  * Created by shubham on 21/7/17.
@@ -40,12 +42,28 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_splash);
         Log.i(TAG, "token: " + FirebaseInstanceId.getInstance().getToken());
-        /*todo add support for all application without backend module..*/
         ApiConnection.getConfigData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ConfigData>(this) {
             @Override
             public void onNext(@NonNull ConfigData configData) {
                 super.onNext(configData);
                 configData.updateSharedPrefData(SplashActivity.this);
+            }
+
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                if (e instanceof HttpException) {
+                    HttpException httpException = (HttpException) e;
+                    Response response = httpException.response();
+                    /*HANDLING ERROR : {"code":"rest_no_route","message":"No route was found matching the URL and request method","data":{"status":404}}*/
+                    if (response.code() == 404) {
+                        onComplete();
+                    } else {
+                        super.onError(e);
+                    }
+                } else {
+                    super.onError(e);
+                }
             }
 
             @Override
