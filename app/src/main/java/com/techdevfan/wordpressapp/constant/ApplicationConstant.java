@@ -6,8 +6,7 @@ package com.techdevfan.wordpressapp.constant;
 
 public interface ApplicationConstant {
     int DEFAULT_PAGE_CHANGE_DELAY_TIME_IN_MILLIS = 2000;
-    //    String BASE_URL = "http://www.techdevfan.com/";
-    String BASE_URL = "http://www.chintanrathod.com/";
+    String BASE_URL = "http://www.techdevfan.com/";
     String DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     String DEFAULT_DATE_FORMAT_2 = "yyyy-MM-dd HH:mm:ss";
     int AVERATE_READ_TIME_WPM = 200;
