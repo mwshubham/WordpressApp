@@ -79,6 +79,7 @@ public class PostListFragment extends BaseFragment {
     }
 
     private void loadPosts() {
+        /*Load Post by Categories*/
         if (getArguments().getString(BUNDLE_KEY_CATEGORY_ID) != null) {
             List<PostData> postDatas = AppDatabase.getAppDatabase(getContext()).getPostDao().getAllPost(PostData.TYPE_POST);
             //noinspection ConstantConditions
@@ -87,7 +88,15 @@ public class PostListFragment extends BaseFragment {
             } else {
                 mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), PostHelper.getPosts(postDatas, getArguments().getString(BUNDLE_KEY_CATEGORY_ID))));
             }
+        } else {
+            //noinspection ConstantConditions
+            if (getArguments().getString(BUNDLE_KEY_TAG_ID) != null && !getArguments().getString(BUNDLE_KEY_TAG_ID).isEmpty()) {
+                List<PostData> postDatas = AppDatabase.getAppDatabase(getContext()).getPostDao().getAllPost(PostData.TYPE_POST);
+                mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), PostHelper.getPostsByTag(postDatas, getArguments().getString(BUNDLE_KEY_TAG_ID))));
+            }
         }
+
+        /* Load Favorite posts*/
         if (getArguments().getBoolean(BUNDLE_KEY_SHOW_FAVORITE_POST)) {
             List<FavoriteData> favoriteDatas = AppDatabase.getAppDatabase(getContext()).getFavoriteDao().getAll();
             List<String> favoritePostIds = new ArrayList<>();
@@ -122,7 +131,6 @@ public class PostListFragment extends BaseFragment {
             loadPosts();
         }
     };
-
 
     @Override
     public void onResume() {

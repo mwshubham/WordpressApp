@@ -1,7 +1,6 @@
 <resources>
     <!--GLOBAL / GENERIC / BASE-->
     <string name="app_name">TechDevFan</string>
-    <!--todo  -->
     <string name="admob_banner_ad_unit_id">ca-app-pub-7865546675450293/7305127614</string>
     <string name="fabric_io_crashlytics">346f7dedda303b4777d890c3c471417a631ccdf5</string>
     <!--SPLASH ACTIVITY-->

@@ -41,7 +41,6 @@ import static com.techdevfan.wordpressapp.constant.ApplicationConstant.WP_POST_U
 import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_AD_ENABLED;
 import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_SHOW_CUSTOM_PAGES;
 
-
 /*todo post list not visible on the basis of tags...*/
 public class HomeActivity extends BaseActivity {
     @SuppressWarnings("unused")

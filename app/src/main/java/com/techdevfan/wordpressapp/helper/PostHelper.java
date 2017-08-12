@@ -23,4 +23,15 @@ public class PostHelper {
         }
         return filteredPostDatas;
     }
+
+    public static List<PostData> getPostsByTag(List<PostData> postDatas, String tagId) {
+        List<PostData> filteredPostDatas = new ArrayList<>();
+        for (PostData eachPostData : postDatas) {
+            if (eachPostData.getTags().contains(tagId)) {
+                filteredPostDatas.add(eachPostData);
+            }
+
+        }
+        return filteredPostDatas;
+    }
 }
