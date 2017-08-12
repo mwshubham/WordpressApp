@@ -19,7 +19,7 @@ import retrofit2.http.Query;
 @SuppressWarnings({"WeakerAccess", "DefaultFileTemplate"})
 public interface ApiInterface {
 
-    String FIELDS_POST = "?fields=id,date,title,content,excerpt,author,featured_media,featured_image_thumb_standard,categories,tags,type,status,link";
+    String FIELDS_POST = "?fields=id,date,title,content,excerpt,author,featured_image_full,featured_image_thumb_standard,categories,tags,type,status,link";
     String FIELDS_CATEGORY = "?fields=id,count,description,name";
     String FIELDS_TAG = "?fields=id,name";
 
@@ -28,6 +28,7 @@ public interface ApiInterface {
     Observable<List<PostData>> getPosts(
             @Query("categories") String categoryId
             , @Query("tags") String tags
+            , @Query("page") int page
     );
 
     @GET("wp-json/wp/v2/posts/{postId}" + FIELDS_POST)

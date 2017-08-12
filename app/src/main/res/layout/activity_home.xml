@@ -8,7 +8,6 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:openDrawer="start"
         >
 
         <android.support.design.widget.CoordinatorLayout
@@ -44,10 +43,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
+                />
 
 
-            </android.support.v4.view.ViewPager>
+            <ProgressBar
+                android:id="@+id/main_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
 
             <com.google.android.gms.ads.AdView
                 android:id="@+id/banner_ad_view"

@@ -33,15 +33,16 @@ public class NetworkHelper {
         try {
 
 
-            if (isNetworkAvailable(context)){
+            if (isNetworkAvailable(context)) {
 
-            }else{
+            } else {
 
             }
             // We had non-200 http error
             if (e instanceof HttpException) {
                 HttpException httpException = (HttpException) e;
                 Response response = httpException.response();
+                Log.i(TAG, "onError: " + response.code());
                 Log.i(TAG, e.getMessage() + " / " + e.getClass());
             }
             // A e error happened

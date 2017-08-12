@@ -11,6 +11,7 @@ import com.techdevfan.wordpressapp.model.post.PostData;
 import java.util.List;
 
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_ID;
+import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_TYPE;
 import static com.techdevfan.wordpressapp.database.AppDatabase.POST_TABLE_NAME;
 
 /**
@@ -22,6 +23,15 @@ public interface PostDao {
     @Query("SELECT * FROM " + POST_TABLE_NAME)
     List<PostData> getAll();
 
+
+    @Query("SELECT * FROM " + POST_TABLE_NAME + " WHERE " + COLUMN_NAME_TYPE + " = :type")
+    List<PostData> getAllPost(String type);
+
+
+    /**
+     * @param id aka postId id of the post
+     * @return PostData for the requested post id
+     */
     @Query("SELECT * FROM " + POST_TABLE_NAME + " WHERE " + COLUMN_NAME_ID + " = :id")
     PostData getPost(String id);
 

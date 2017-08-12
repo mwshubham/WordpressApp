@@ -44,8 +44,6 @@ public class RetrofitClient {
     private static OkHttpClient.Builder getOkHttpClientBuilder() {
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
         okHttpClientBuilder.readTimeout(DEFAULT_READ_TIMEOUT_SEC, TimeUnit.SECONDS).connectTimeout(DEFAULT_CONNECT_TIMEOUT_SEC, TimeUnit.SECONDS);
-
-
         okHttpClientBuilder.interceptors().add(chain -> {
             Request request = chain.request();
             Response response = chain.proceed(request);

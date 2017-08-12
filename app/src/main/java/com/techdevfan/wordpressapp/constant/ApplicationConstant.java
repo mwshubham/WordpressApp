@@ -15,7 +15,11 @@ public interface ApplicationConstant {
 
 
     /*NETWORK*/
-    int DEFAULT_READ_TIMEOUT_SEC = 30;
-    int DEFAULT_CONNECT_TIMEOUT_SEC = 30;
+    int DEFAULT_READ_TIMEOUT_SEC = 45;
+    int DEFAULT_CONNECT_TIMEOUT_SEC = 45;
     int MAX_RETRY_COUNT = 3;
+
+
+    /*BOADCAST EVENT NAME ACTION NAME*/
+    String WP_POST_UPDATED = "WP_POST_UPDATED";
 }

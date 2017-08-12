@@ -19,6 +19,7 @@ public class SharedPreferenceHelper {
     public final static String KEY_IS_TAGS_ENABLED = "IS_TAGS_ENABLED";
     public final static String KEY_IS_SHOW_MIN_READ_TIME = "IS_SHOW_MIN_READ_TIME";
     public final static String KEY_IS_SHOW_CUSTOM_PAGES = "IS_SHOW_CUSTOM_PAGES";
+    public final static String KEY_POST_COUNT = "POST_COUNT";
 
     /**
      * Set a string shared preference

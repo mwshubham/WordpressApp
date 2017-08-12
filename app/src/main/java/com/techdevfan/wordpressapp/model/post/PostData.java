@@ -28,11 +28,12 @@ import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_CONTE
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_DATE;
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_EXCEPT;
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_FEATURED_MEDIA;
+import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_FEATURED_IMAGE_FULL;
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_ID;
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_LINK;
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_TAGS;
 import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_TITLE;
+import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_TYPE;
 import static com.techdevfan.wordpressapp.database.AppDatabase.POST_TABLE_NAME;
 
 /**
@@ -41,6 +42,10 @@ import static com.techdevfan.wordpressapp.database.AppDatabase.POST_TABLE_NAME;
  */
 @Entity(tableName = POST_TABLE_NAME)
 public class PostData {
+
+    public static String TYPE_POST = "post";
+    public static String TYPE_PAGE = "page";
+
     @SuppressWarnings("unused")
     private static final String TAG = "PostData";
 
@@ -54,6 +59,12 @@ public class PostData {
     @SerializedName(COLUMN_NAME_DATE)
     @Expose
     public String date;
+
+    @ColumnInfo(name = COLUMN_NAME_TYPE)
+    @SerializedName(COLUMN_NAME_TYPE)
+    @Expose
+    public String type;
+
 
     @Embedded(prefix = COLUMN_NAME_TITLE)
     @SerializedName(COLUMN_NAME_TITLE)
@@ -80,10 +91,10 @@ public class PostData {
     @Expose
     public String link;
 
-    @ColumnInfo(name = COLUMN_NAME_FEATURED_MEDIA)
-    @SerializedName(COLUMN_NAME_FEATURED_MEDIA)
+    @ColumnInfo(name = COLUMN_NAME_FEATURED_IMAGE_FULL)
+    @SerializedName(COLUMN_NAME_FEATURED_IMAGE_FULL)
     @Expose
-    public String featuredMedia;
+    public String featuredImageFull;
 
     @ColumnInfo(name = COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD)
     @SerializedName(COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD)
@@ -117,6 +128,13 @@ public class PostData {
         }
 
         return date;
+    }
+
+    public String getType() {
+        if (type == null) {
+            return "";
+        }
+        return type;
     }
 
     public String getFormatedDate(Context context) {
@@ -176,11 +194,11 @@ public class PostData {
         return link;
     }
 
-    public String getFeaturedMedia() {
-        if (featuredMedia == null) {
+    public String getFeaturedImageFull() {
+        if (featuredImageFull == null) {
             return "";
         }
-        return featuredMedia;
+        return featuredImageFull;
     }
 
     public String getFeaturedImageThumbnailStandard() {
