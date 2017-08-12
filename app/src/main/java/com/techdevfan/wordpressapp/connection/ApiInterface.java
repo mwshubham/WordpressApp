@@ -19,6 +19,7 @@ import retrofit2.http.Query;
 @SuppressWarnings({"WeakerAccess", "DefaultFileTemplate"})
 public interface ApiInterface {
 
+    /* on adding any field herem you need to update the get_favorite_post_data function as it also return the post data for favorite post*/
     String FIELDS_POST = "?fields=id,date,title,content,excerpt,author,featured_image_full,featured_image_thumb_standard,categories,tags,type,status,link";
     String FIELDS_CATEGORY = "?fields=id,count,description,name";
     String FIELDS_TAG = "?fields=id,name";

@@ -8,21 +8,28 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.techdevfan.wordpressapp.R;
 import com.techdevfan.wordpressapp.adapter.PostListFragmentRvAdapter;
+import com.techdevfan.wordpressapp.connection.ApiConnection;
+import com.techdevfan.wordpressapp.connection.CustomObserver;
 import com.techdevfan.wordpressapp.database.AppDatabase;
 import com.techdevfan.wordpressapp.databinding.FragmentPostListBinding;
 import com.techdevfan.wordpressapp.helper.EnumHelper;
 import com.techdevfan.wordpressapp.helper.PostHelper;
+import com.techdevfan.wordpressapp.model.FavoriteData;
 import com.techdevfan.wordpressapp.model.post.PostData;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.techdevfan.wordpressapp.constant.ApplicationConstant.WP_POST_UPDATED;
 import static com.techdevfan.wordpressapp.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
@@ -73,55 +80,6 @@ public class PostListFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadPosts();
-
-//        CustomObserver<List<PostData>> customObserver = new CustomObserver<List<PostData>>(getContext()) {
-//            @Override
-//            public void onSubscribe(@NonNull Disposable d) {
-//                super.onSubscribe(d);
-//                mBinding.animationProgressBar.setVisibility(View.VISIBLE);
-//                mBinding.animationProgressBar.playAnimation();
-//            }
-//
-//            @Override
-//            public void onNext(@NonNull List<PostData> postDatas) {
-//                super.onNext(postDatas);
-//                AppDatabase.getAppDatabase(getContext()).getPostDao().insertAll(postDatas);
-//                mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), postDatas));
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//                super.onComplete();
-//                mBinding.animationProgressBar.setVisibility(View.GONE);
-//                mBinding.animationProgressBar.cancelAnimation();
-//            }
-//        };
-
-//        if (getArguments().getBoolean(BUNDLE_KEY_SHOW_FAVORITE_POST)) {
-//            List<FavoriteData> favoriteDatas = AppDatabase.getAppDatabase(getContext()).getFavoriteDao().getAll();
-//            List<String> favoritePostIds = new ArrayList<>();
-//            for (FavoriteData favoriteData : favoriteDatas) {
-//                favoritePostIds.add(favoriteData.getPostId());
-//            }
-//            if (favoriteDatas.isEmpty()) {
-//                Log.i(TAG, "onActivityCreated: NO FAVORITE POST EXIST !!!!!!!!!!!!!!!!");
-//                /*todo handle this situation*/
-//            } else {
-//                ApiConnection.getFavoritePost(getContext(), favoritePostIds).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(customObserver);
-//            }
-//        } else {
-//            Observable<List<PostData>> postListObservable = null;
-//            if (getArguments().getString(BUNDLE_KEY_CATEGORY_ID) != null) {
-//                mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), AppDatabase.getAppDatabase(getContext()).getPostDao().getAll()));
-//                postListObservable = ApiConnection.getPosts(getContext(), getArguments().getString(BUNDLE_KEY_CATEGORY_ID), "", 1);
-//            } else if (getArguments().getString(BUNDLE_KEY_TAG_ID) != null) {
-//                postListObservable = ApiConnection.getPosts(getContext(), "", getArguments().getString(BUNDLE_KEY_TAG_ID), 1);
-//            }
-//
-//            if (postListObservable != null) {
-//                postListObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(customObserver);
-//            }
-//        }
     }
 
     private void loadPosts() {
@@ -132,6 +90,32 @@ public class PostListFragment extends BaseFragment {
                 mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), postDatas));
             } else {
                 mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), PostHelper.getPosts(postDatas, getArguments().getString(BUNDLE_KEY_CATEGORY_ID))));
+            }
+        }
+        if (getArguments().getBoolean(BUNDLE_KEY_SHOW_FAVORITE_POST)) {
+            List<FavoriteData> favoriteDatas = AppDatabase.getAppDatabase(getContext()).getFavoriteDao().getAll();
+            List<String> favoritePostIds = new ArrayList<>();
+            List<PostData> favoritePostDatas = new ArrayList<>();
+            for (FavoriteData favoriteData : favoriteDatas) {
+                favoritePostIds.add(favoriteData.getPostId());
+                favoritePostDatas.add(AppDatabase.getAppDatabase(getContext()).getPostDao().getPost(favoriteData.getPostId()));
+            }
+
+            /*loading favorite post from database*/
+            mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), favoritePostDatas));
+
+            if (favoriteDatas.isEmpty()) {
+                Log.i(TAG, "onActivityCreated: NO FAVORITE POST EXIST !!!!!!!!!!!!!!!!");
+                /*todo handle this situation*/
+            } else {
+                ApiConnection.getFavoritePost(getContext(), favoritePostIds).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<PostData>>(getContext()) {
+                    @Override
+                    public void onNext(@NonNull List<PostData> postDatas) {
+                        super.onNext(postDatas);
+                        AppDatabase.getAppDatabase(getContext()).getPostDao().insertAll(postDatas);
+                        mBinding.recyclerView.setAdapter(new PostListFragmentRvAdapter(getContext(), postDatas));
+                    }
+                });
             }
         }
     }
