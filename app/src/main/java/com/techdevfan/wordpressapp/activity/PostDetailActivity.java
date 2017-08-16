@@ -1,5 +1,6 @@
 package com.techdevfan.wordpressapp.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ public class PostDetailActivity extends BaseActivity {
     private ActivityPostDetailBinding mBinding;
     private PostData mPostData;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +44,19 @@ public class PostDetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mPostData = AppDatabase.getAppDatabase(this).getPostDao().getPost((String) getIntent().getExtras().get(BUNDLE_KEY_POST_ID));
+
         if (mPostData != null) {
             mBinding.setData(mPostData);
             mBinding.webView.setDrawingCacheEnabled(true);
             mBinding.webView.getSettings().setBuiltInZoomControls(true);
             mBinding.webView.getSettings().setDisplayZoomControls(false);
             mBinding.webView.getSettings().setUseWideViewPort(true);
+            mBinding.webView.getSettings().setLoadWithOverviewMode(true);
+
+            mBinding.webView.setWebChromeClient(new WebChromeClient() {
+            });
+
+            mBinding.webView.getSettings().setJavaScriptEnabled(true);
 //            mBinding.webView.getSettings().setJavaScriptEnabled(true);
 
             mBinding.webView.setWebViewClient(new WebViewClient() {
@@ -104,9 +114,8 @@ public class PostDetailActivity extends BaseActivity {
         return "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>"
                 + "<HTML xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en' class='gr__store_webkul_com'>"
                 + "<HEAD>"
-//                + "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>"
-//                + "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
-                + " <meta name='viewport' content='width=device-width, user-scalable=no' />"
+                + "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>"
+                + "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
                 + "<link id='hu-user-gfont' href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,300italic,300,400italic,600&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>"
                 + "<link rel='stylesheet' id='crayon-css'  href='http://techdevfan.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=_2.7.2_beta' type='text/css' media='all' />"
                 + "<link rel='stylesheet' id='crayon-theme-classic-css' href='http://techdevfan.com/wp-content/plugins/crayon-syntax-highlighter/themes/classic/classic.css?ver=_2.7.2_beta' type='text/css' media='all'>"
@@ -121,5 +130,21 @@ public class PostDetailActivity extends BaseActivity {
                 + mPostData.getContent().getRendered()
                 + "</BODY>"
                 + "</HTML>";
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releaseWebView();
+    }
+
+    private void releaseWebView() {
+        if (mBinding.webView != null) {
+            mBinding.webView.setTag(null);
+            mBinding.webView.clearHistory();
+            mBinding.webView.removeAllViews();
+            mBinding.webView.loadUrl("about:blank"); // to clear view
+            mBinding.webView.destroy();
+        }
     }
 }
