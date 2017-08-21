@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
+import android.util.Log;
 
 import com.techdevfan.wordpressapp.database.dao.CategoryDao;
 import com.techdevfan.wordpressapp.database.dao.FavoriteDao;
@@ -55,7 +56,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static final String COLUMN_NAME_CATEGORIES = "categories";
     public static final String COLUMN_NAME_TAGS = "tags";
     public static final String COLUMN_NAME_RENDERED = "rendered";
-
+    private static final String TAG = "AppDatabase";
 
     public abstract CategoryDao getCategoryDao();
 
@@ -66,6 +67,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PostDao getPostDao();
 
     public static AppDatabase getAppDatabase(Context context) {
+        Log.i(TAG, "getAppDatabase: ");
         if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)

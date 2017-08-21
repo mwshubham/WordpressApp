@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,12 @@ public class PostListFragment extends BaseFragment {
     private static final String TAG = "PostListFragment";
     private FragmentPostListBinding mBinding;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +86,8 @@ public class PostListFragment extends BaseFragment {
     }
 
     private void loadPosts() {
+        Log.d(TAG, "loadPosts: ");
+        /*fixme too much work on the main thread put it in the background*/
         /*Load Post by Categories*/
         if (getArguments().getString(BUNDLE_KEY_CATEGORY_ID) != null) {
             List<PostData> postDatas = AppDatabase.getAppDatabase(getContext()).getPostDao().getAllPost(PostData.TYPE_POST);
