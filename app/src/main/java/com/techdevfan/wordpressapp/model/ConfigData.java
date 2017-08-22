@@ -2,9 +2,9 @@ package com.techdevfan.wordpressapp.model;
 
 import android.content.Context;
 
-import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
 
 import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_AD_ENABLED;
 import static com.techdevfan.wordpressapp.helper.SharedPreferenceHelper.KEY_IS_HIDE_CATEGORY_WITH_NO_POST;
@@ -74,7 +74,6 @@ public class ConfigData {
     public void updateSharedPrefData(Context context) {
         SharedPreferenceHelper.setSharedPreferenceBoolean(context, KEY_IS_AD_ENABLED, isAdEnabled());
         SharedPreferenceHelper.setSharedPreferenceBoolean(context, KEY_IS_HIDE_CATEGORY_WITH_NO_POST, isHideCategoryWithNoPost());
-//        SharedPreferenceHelper.setSharedPreferenceBoolean(context, KEY_IS_HIDE_CATEGORY_WITH_NO_POST, false);
         SharedPreferenceHelper.setSharedPreferenceBoolean(context, KEY_IS_TAGS_ENABLED, isTagsEnabled());
         SharedPreferenceHelper.setSharedPreferenceBoolean(context, KEY_IS_SHOW_MIN_READ_TIME, isShowMinReadTime());
         SharedPreferenceHelper.setSharedPreferenceBoolean(context, KEY_IS_SHOW_CUSTOM_PAGES, isShowCustomPages());
