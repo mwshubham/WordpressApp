@@ -5,10 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.techdevfan.wordpressapp.database.AppDatabase;
-import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.MobileAds;
+import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
 
 import io.fabric.sdk.android.Fabric;
 import io.reactivex.disposables.CompositeDisposable;
@@ -54,7 +53,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        AppDatabase.destroyInstance();
         super.onDestroy();
     }
 }

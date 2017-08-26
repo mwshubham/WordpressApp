@@ -22,10 +22,11 @@ public class ApiConnection {
     private static final String TAG = "ApiConnection";
 
     /*POST*/
-    public static Observable<List<PostData>> getPosts(Context context, @NonNull String categoryId, @NonNull String tagId) {
+    public static Observable<List<PostData>> getPosts(Context context, @NonNull String categoryId, @NonNull String tagId, int page) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getPosts(
-                categoryId.isEmpty() ? null : categoryId
-                , tagId.isEmpty() ? null : tagId
+                categoryId == null || categoryId.isEmpty() ? null : categoryId
+                , tagId == null || tagId.isEmpty() ? null : tagId
+                , page
         );
     }
 

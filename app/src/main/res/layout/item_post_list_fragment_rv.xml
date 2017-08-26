@@ -6,8 +6,6 @@
 
     <data>
 
-        <import type="com.techdevfan.wordpressapp.database.AppDatabase"/>
-
         <variable
             name="data"
             type="com.techdevfan.wordpressapp.model.post.PostData"/>

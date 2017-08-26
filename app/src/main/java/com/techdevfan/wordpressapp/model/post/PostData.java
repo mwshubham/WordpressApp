@@ -1,18 +1,14 @@
 package com.techdevfan.wordpressapp.model.post;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.techdevfan.wordpressapp.R;
 import com.techdevfan.wordpressapp.constant.ApplicationConstant;
 import com.techdevfan.wordpressapp.helper.Helper;
 import com.techdevfan.wordpressapp.helper.TimeHelper;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,85 +18,90 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import static com.techdevfan.wordpressapp.constant.ApplicationConstant.MAX_READ_TIME;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_AUTHOR;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_CATEGORIES;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_CONTENT;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_DATE;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_EXCEPT;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_FEATURED_MEDIA;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_ID;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_LINK;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_TAGS;
-import static com.techdevfan.wordpressapp.database.AppDatabase.COLUMN_NAME_TITLE;
-import static com.techdevfan.wordpressapp.database.AppDatabase.POST_TABLE_NAME;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_AUTHOR;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_CONTENT;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_DATE;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_EXCEPT;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_FEATURED_IMAGE_FULL;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_ID;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_LINK;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_TITLE;
+import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_TYPE;
 
 /**
  * SAME CLASS IS USED FOR PAGE AS WELL
  * Created by shubham on 22/7/17.
  */
-@Entity(tableName = POST_TABLE_NAME)
 public class PostData {
+
+    public static String TYPE_POST = "post";
+    public static String TYPE_PAGE = "page";
+
     @SuppressWarnings("unused")
     private static final String TAG = "PostData";
 
-    @PrimaryKey
-    @ColumnInfo(name = COLUMN_NAME_ID)
     @SerializedName(COLUMN_NAME_ID)
     @Expose
     public String id;
 
-    @ColumnInfo(name = COLUMN_NAME_DATE)
     @SerializedName(COLUMN_NAME_DATE)
     @Expose
     public String date;
 
-    @Embedded(prefix = COLUMN_NAME_TITLE)
+    @SerializedName(COLUMN_NAME_TYPE)
+    @Expose
+    public String type;
+
     @SerializedName(COLUMN_NAME_TITLE)
     @Expose
     public TitleData title;
 
-    @Embedded(prefix = COLUMN_NAME_CONTENT)
     @SerializedName(COLUMN_NAME_CONTENT)
     @Expose
     public ContentData content;
 
-    @Embedded(prefix = COLUMN_NAME_EXCEPT)
     @SerializedName(COLUMN_NAME_EXCEPT)
     @Expose
     public ExcerptData excerpt;
 
-    @ColumnInfo(name = COLUMN_NAME_AUTHOR)
     @SerializedName(COLUMN_NAME_AUTHOR)
     @Expose
     public String author;
 
-    @ColumnInfo(name = COLUMN_NAME_LINK)
     @SerializedName(COLUMN_NAME_LINK)
     @Expose
     public String link;
 
-    @ColumnInfo(name = COLUMN_NAME_FEATURED_MEDIA)
-    @SerializedName(COLUMN_NAME_FEATURED_MEDIA)
+    @SerializedName(COLUMN_NAME_FEATURED_IMAGE_FULL)
     @Expose
-    public String featuredMedia;
+    public String featuredImageFull;
 
-    @ColumnInfo(name = COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD)
     @SerializedName(COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD)
     @Expose
     public String featuredImageThumbnailStandard;
 
-    @ColumnInfo(name = COLUMN_NAME_CATEGORIES)
-    @SerializedName(COLUMN_NAME_CATEGORIES)
+    @SerializedName("categories")
     @Expose
     public List<String> categories = null;
 
-    @ColumnInfo(name = COLUMN_NAME_TAGS)
-    @SerializedName(COLUMN_NAME_TAGS)
+    @SerializedName("tags")
     @Expose
     public List<String> tags = null;
 
-    public PostData() {
+    public PostData(String id, String date, String type, TitleData title, ContentData content, ExcerptData excerpt, String author, String link, String featuredImageFull, String featuredImageThumbnailStandard, List<String> categories, List<String> tags) {
+        this.id = id;
+        this.date = date;
+        this.type = type;
+        this.title = title;
+        this.content = content;
+        this.excerpt = excerpt;
+        this.author = author;
+        this.link = link;
+        this.featuredImageFull = featuredImageFull;
+        this.featuredImageThumbnailStandard = featuredImageThumbnailStandard;
+        this.categories = categories;
+        this.tags = tags;
     }
 
     public String getId() {
@@ -117,6 +118,13 @@ public class PostData {
         }
 
         return date;
+    }
+
+    public String getType() {
+        if (type == null) {
+            return "";
+        }
+        return type;
     }
 
     public String getFormatedDate(Context context) {
@@ -139,7 +147,7 @@ public class PostData {
 
     public TitleData getTitle() {
         if (title == null) {
-            return new TitleData();
+            return new TitleData(null);
         }
 
         return title;
@@ -147,7 +155,7 @@ public class PostData {
 
     public ContentData getContent() {
         if (content == null) {
-            return new ContentData();
+            return new ContentData(null);
         }
 
         return content;
@@ -155,7 +163,7 @@ public class PostData {
 
     public ExcerptData getExcerpt() {
         if (excerpt == null) {
-            return new ExcerptData();
+            return new ExcerptData(null);
         }
 
         return excerpt;
@@ -176,11 +184,11 @@ public class PostData {
         return link;
     }
 
-    public String getFeaturedMedia() {
-        if (featuredMedia == null) {
+    public String getFeaturedImageFull() {
+        if (featuredImageFull == null) {
             return "";
         }
-        return featuredMedia;
+        return featuredImageFull;
     }
 
     public String getFeaturedImageThumbnailStandard() {

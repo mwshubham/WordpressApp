@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.techdevfan.wordpressapp.R;
-import com.techdevfan.wordpressapp.database.AppDatabase;
 import com.techdevfan.wordpressapp.databinding.ItemNavigationRvBinding;
 import com.techdevfan.wordpressapp.handler.ItemNavigationRvHandler;
 import com.techdevfan.wordpressapp.helper.EnumHelper;
 import com.techdevfan.wordpressapp.model.CategoryData;
 import com.techdevfan.wordpressapp.model.post.PostData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.Nullable;
@@ -32,18 +30,15 @@ public class NavigationRvAdapter extends RecyclerView.Adapter<NavigationRvAdapte
 
     private final Context mContext;
     private EnumHelper.NavItemType mNavItemType;
-    private List<CategoryData> mCategoryDatas = new ArrayList<>();
-    private List<PostData> mPostDatas = new ArrayList<>();
+    private List<CategoryData> mCategoryDatas;
+    private List<PostData> mPostDatas;
 
-    public NavigationRvAdapter(Context context, EnumHelper.NavItemType navItemType, @Nullable List<PostData> pageDatas) {
+    public NavigationRvAdapter(Context context, EnumHelper.NavItemType navItemType, @Nullable List<CategoryData> categoryDatas, @Nullable List<PostData> pageDatas) {
         mContext = context;
         mNavItemType = navItemType;
         switch (navItemType) {
             case TYPE_CATEGORY:
-                CategoryData latestCategoryData = new CategoryData();
-                latestCategoryData.setName(mContext.getString(R.string.latest));
-                mCategoryDatas.add(latestCategoryData);
-                mCategoryDatas.addAll(AppDatabase.getAppDatabase(mContext).getCategoryDao().getAll());
+                mCategoryDatas = categoryDatas;
                 break;
 
             case TYPE_PAGE:
@@ -82,10 +77,10 @@ public class NavigationRvAdapter extends RecyclerView.Adapter<NavigationRvAdapte
     public int getItemCount() {
         switch (mNavItemType) {
             case TYPE_CATEGORY:
-                return mCategoryDatas.size();
+                return mCategoryDatas == null ? 0 : mCategoryDatas.size();
 
             case TYPE_PAGE:
-                return mPostDatas.size();
+                return mPostDatas == null ? 0 : mPostDatas.size();
         }
         return 0;
     }

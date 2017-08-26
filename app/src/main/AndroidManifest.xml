@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.techdevfan.wordpressapp">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.techdevfan.wordpressapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!--android:roundIcon="@mipmap/ic_launcher_round"-->
 
     <application
         android:name=".WordpressApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
@@ -21,20 +22,20 @@
             android:noHistory="true"
             android:theme="@style/AppTheme.FullScreenAppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.HomeActivity"/>
-        <activity android:name=".activity.PostDetailActivity"/>
+        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.PostDetailActivity" />
         <activity
             android:name=".activity.PostListActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="346f7dedda303b4777d890c3c471417a631ccdf5"/>
+            android:value="346f7dedda303b4777d890c3c471417a631ccdf5" />
 
     </application>
 

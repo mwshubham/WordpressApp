@@ -1,4 +1,5 @@
 <resources>
+    <!--GLOBAL / GENERIC / BASE-->
     <string name="app_name">TechDevFan</string>
     <string name="admob_banner_ad_unit_id">ca-app-pub-7865546675450293/7305127614</string>
     <string name="fabric_io_crashlytics">346f7dedda303b4777d890c3c471417a631ccdf5</string>
@@ -11,7 +12,7 @@
     <string name="favorite">Favorite</string>
     <!--Menu-->
     <string name="share">Share</string>
-    <!---->
+    <!--RELATED TO TIME-->
     <string name="just_now">just now</string>
     <string name="a_min_ago">a minute ago</string>
     <string name="minutes_ago">minutes ago</string>
@@ -20,13 +21,16 @@
     <string name="yesterday">yesterday</string>
     <string name="days_ago">days ago</string>
     <!--Message-->
-    <string name="msg_post_added_to_favorite">Post added to Favorite</string>
-    <string name="msg_post_removed_from_favorite">Post removed from Favorite</string>
-    <string name="msg_press_back_again_to_exit">Please back again to exit</string>
+    <string name="post_added_to_favorite">Post added to Favorite</string>
+    <string name="post_removed_from_favorite">Post removed from Favorite</string>
+    <string name="press_back_again_to_exit">Please back again to exit</string>
     <!--Question-->
     <!--Error Message-->
     <string name="error_cannot_share_post">Cannot find any sharing option for this post, please try again later!</string>
     <!--POST-->
     <string name="min_read">min read</string>
+    <!--EMPTY CONTENT-->
+    <string name="favorite_empty_container_title">No Data Found</string>
+    <string name="favorite_empty_container_subtitle">May be go back and start reading !</string>
     <!--CATEGORY-->
 </resources>

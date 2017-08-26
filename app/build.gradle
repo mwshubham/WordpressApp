@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'me.tatarka.retrolambda' /*i m the last one*/
 
 android {
 
@@ -18,13 +17,6 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-/*Full Desc: https://stackoverflow.com/questions/44322178/room-schema-export-directory-is-not-provided-to-the-annotation-processor-so-we*/
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
 
     dexOptions {
@@ -82,9 +74,8 @@ dependencies {
     compile "com.google.android.gms:play-services-ads:$google_version"
     compile "com.google.android:flexbox:$flex_layout_version"
 
-
-    compile "android.arch.persistence.room:runtime:$arch_persistance_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$arch_persistance_version"
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+//    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
 
     compile "com.android.support:multidex:$multidex_version"
 }

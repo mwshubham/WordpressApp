@@ -11,4 +11,10 @@ import android.support.v4.app.Fragment;
 public class BaseFragment extends Fragment {
     @SuppressWarnings("unused")
     private static final String TAG = "BaseFragment";
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }

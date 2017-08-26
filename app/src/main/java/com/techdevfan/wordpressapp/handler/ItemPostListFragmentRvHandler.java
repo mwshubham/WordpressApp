@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.techdevfan.wordpressapp.activity.PostDetailActivity;
 import com.techdevfan.wordpressapp.model.post.PostData;
 
-import static com.techdevfan.wordpressapp.constant.BundleConstant.BUNDLE_KEY_POST_DATA;
 import static com.techdevfan.wordpressapp.constant.BundleConstant.BUNDLE_KEY_POST_ID;
 
 /**

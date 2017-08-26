@@ -3,6 +3,8 @@ package com.techdevfan.wordpressapp.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.techdevfan.wordpressapp.R;
 import com.techdevfan.wordpressapp.databinding.ActivityPostListBinding;
@@ -33,9 +35,11 @@ public class PostListActivity extends BaseActivity {
         onNewIntent(getIntent());
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         if (getIntent().hasExtra(BUNDLE_KEY_SHOW_FAVORITE_POST) && getIntent().getExtras().getBoolean(BUNDLE_KEY_SHOW_FAVORITE_POST)) {
             //noinspection ConstantConditions
             getSupportActionBar().setTitle(R.string.favorite);

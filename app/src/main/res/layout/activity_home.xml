@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:openDrawer="start"
-        >
+        android:layout_height="match_parent">
 
         <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
@@ -26,7 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tab_layout"
@@ -34,7 +30,7 @@
                     android:layout_height="wrap_content"
                     app:tabGravity="fill"
                     app:tabMode="scrollable"
-                    tools:layout_height="?attr/actionBarSize"/>
+                    tools:layout_height="?attr/actionBarSize" />
 
 
             </android.support.design.widget.AppBarLayout>
@@ -43,11 +39,14 @@
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-            </android.support.v4.view.ViewPager>
+            <!--<ProgressBar-->
+            <!--android:id="@+id/main_progress_bar"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"/>-->
 
             <com.google.android.gms.ads.AdView
                 android:id="@+id/banner_ad_view"
@@ -55,8 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 app:adSize="BANNER"
-                app:adUnitId="@string/admob_banner_ad_unit_id">
-            </com.google.android.gms.ads.AdView>
+                app:adUnitId="@string/admob_banner_ad_unit_id" />
 
 
         </android.support.design.widget.CoordinatorLayout>
@@ -66,8 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/gray_100"
-            >
+            android:background="@color/gray_100">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -83,29 +80,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_navigation_rv"
-                        />
+                        tools:listitem="@layout/item_navigation_rv" />
 
 
-                    <View
-                        style="@style/DividerHorizontal"/>
+                    <View style="@style/DividerHorizontal" />
 
 
                     <include
                         android:id="@+id/item_favorite"
-                        layout="@layout/item_navigation_rv"/>
+                        layout="@layout/item_navigation_rv" />
 
-                    <View
-                        style="@style/DividerHorizontal"
-                        />
+                    <View style="@style/DividerHorizontal" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/pages_rv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_navigation_rv"
-                        />
+                        tools:listitem="@layout/item_navigation_rv" />
 
                 </LinearLayout>
 

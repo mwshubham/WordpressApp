@@ -1,8 +1,6 @@
 package com.techdevfan.wordpressapp.helper;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.io.IOException;
@@ -19,12 +17,12 @@ public class NetworkHelper {
     private static final String TAG = "NetworkHelper";
 
 
-    public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+//    public static boolean isNetworkAvailable(Context context) {
+//        ConnectivityManager connectivityManager
+//                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+//    }
 
     public static void onError(Context context, Throwable e) {
         Log.d(TAG, "onError: ");
@@ -33,15 +31,14 @@ public class NetworkHelper {
         try {
 
 
-            if (isNetworkAvailable(context)){
-
-            }else{
-
-            }
+//            if (isNetworkAvailable(context)) {
+//            } else {
+//            }
             // We had non-200 http error
             if (e instanceof HttpException) {
                 HttpException httpException = (HttpException) e;
                 Response response = httpException.response();
+                Log.i(TAG, "onError: " + response.code());
                 Log.i(TAG, e.getMessage() + " / " + e.getClass());
             }
             // A e error happened
