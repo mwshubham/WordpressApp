@@ -3,6 +3,9 @@ package com.techdevfan.wordpressapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 import static com.techdevfan.wordpressapp.database.contract.TagContract.TagEntry.COLUMN_NAME_ID;
 import static com.techdevfan.wordpressapp.database.contract.TagContract.TagEntry.COLUMN_NAME_NAME;
 
@@ -10,11 +13,12 @@ import static com.techdevfan.wordpressapp.database.contract.TagContract.TagEntry
  * Created by shubham on 27/7/17.
  */
 
-public class TagData {
+public class TagData extends RealmObject {
 
     @SuppressWarnings("unused")
     private static final String TAG = "TagData";
 
+    @PrimaryKey
     @SerializedName(COLUMN_NAME_ID)
     @Expose
     public String id;
@@ -22,11 +26,6 @@ public class TagData {
     @SerializedName(COLUMN_NAME_NAME)
     @Expose
     public String name;
-
-    public TagData(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
     public String getId() {
         if (id == null) {

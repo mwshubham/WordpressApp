@@ -2,7 +2,6 @@ package com.techdevfan.wordpressapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -77,7 +76,6 @@ public class PostListFragmentRvAdapter extends RecyclerView.Adapter<PostListFrag
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: " + mPostDatas.size());
         return mPostDatas.size();
     }
 

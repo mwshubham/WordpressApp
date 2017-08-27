@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'realm-android'
 
 android {
 
@@ -38,9 +39,13 @@ android {
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven {
+        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+    }
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -49,18 +54,23 @@ dependencies {
     compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     testCompile "junit:junit:$junit_version"
+
     // retrofit, gson, okhttp
     compile "com.google.code.gson:gson:$gson_version"
     compile "com.squareup.retrofit2:retrofit:$retrofit_version"
     compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
     compile "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
+
     // Reative X android
     compile "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     compile "io.reactivex.rxjava2:rxjava:$rxjava_version"
     compile "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-    // same version as of Retrofit2
+
     compile "com.facebook.stetho:stetho:$stetho_version"
     compile "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+    compile "com.uphyca:stetho_realm:$stetho_realm_version"
+
+
     compile "de.hdodenhof:circleimageview:$circle_iv_version"
     compile "com.github.bumptech.glide:glide:$glide_version"
     compile "com.airbnb.android:lottie:$lottie_version"
@@ -74,8 +84,9 @@ dependencies {
     compile "com.google.android.gms:play-services-ads:$google_version"
     compile "com.google.android:flexbox:$flex_layout_version"
 
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+//    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 //    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+
 
     compile "com.android.support:multidex:$multidex_version"
 }

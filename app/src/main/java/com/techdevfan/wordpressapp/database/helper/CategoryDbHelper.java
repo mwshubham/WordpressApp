@@ -2,13 +2,9 @@ package com.techdevfan.wordpressapp.database.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.techdevfan.wordpressapp.model.CategoryData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.techdevfan.wordpressapp.database.contract.CategoryContract.CategoryEntry.COLUMN_NAME_COUNT;
 import static com.techdevfan.wordpressapp.database.contract.CategoryContract.CategoryEntry.COLUMN_NAME_DESCRIPTION;
@@ -50,43 +46,43 @@ public class CategoryDbHelper extends BaseSQLliteOpenHelper {
     }
 
 
-    public synchronized List<CategoryData> getAll() {
-        SQLiteDatabase readableDatabase = getReadableDatabase();
-        Cursor cursor = null;
-        List<CategoryData> categoryDataList = new ArrayList<>();
-        try {
-            cursor = readableDatabase.query(TABLE_NAME
-                    , new String[]{
-                            COLUMN_NAME_ID
-                            , COLUMN_NAME_NAME
-                            , COLUMN_NAME_DESCRIPTION
-                            , COLUMN_NAME_COUNT
-                    }
-                    , null
-                    , null
-                    , null
-                    , null
-                    , null);
-
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        categoryDataList.add(
-                                new CategoryData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_COUNT))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_DESCRIPTION))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NAME))
-                                ));
-                    } while (cursor.moveToNext());
-                }
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            close();
-        }
-        return categoryDataList;
-    }
+//    public synchronized List<CategoryData> getAll() {
+//        SQLiteDatabase readableDatabase = getReadableDatabase();
+//        Cursor cursor = null;
+//        List<CategoryData> categoryDataList = new ArrayList<>();
+//        try {
+//            cursor = readableDatabase.query(TABLE_NAME
+//                    , new String[]{
+//                            COLUMN_NAME_ID
+//                            , COLUMN_NAME_NAME
+//                            , COLUMN_NAME_DESCRIPTION
+//                            , COLUMN_NAME_COUNT
+//                    }
+//                    , null
+//                    , null
+//                    , null
+//                    , null
+//                    , null);
+//
+//            if (cursor != null) {
+//                if (cursor.moveToFirst()) {
+//                    do {
+//                        categoryDataList.add(
+//                                new CategoryData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_COUNT))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_DESCRIPTION))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_NAME))
+//                                ));
+//                    } while (cursor.moveToNext());
+//                }
+//            }
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//            close();
+//        }
+//        return categoryDataList;
+//    }
 
 }

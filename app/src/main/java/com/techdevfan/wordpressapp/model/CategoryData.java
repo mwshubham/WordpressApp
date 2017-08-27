@@ -3,6 +3,9 @@ package com.techdevfan.wordpressapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 import static com.techdevfan.wordpressapp.database.contract.CategoryContract.CategoryEntry.COLUMN_NAME_COUNT;
 import static com.techdevfan.wordpressapp.database.contract.CategoryContract.CategoryEntry.COLUMN_NAME_DESCRIPTION;
 import static com.techdevfan.wordpressapp.database.contract.CategoryContract.CategoryEntry.COLUMN_NAME_ID;
@@ -11,10 +14,11 @@ import static com.techdevfan.wordpressapp.database.contract.CategoryContract.Cat
 /**
  * Created by shubham on 22/7/17.
  */
-public class CategoryData {
+public class CategoryData extends RealmObject {
     @SuppressWarnings("unused")
     private static final String TAG = "CategoryData";
 
+    @PrimaryKey
     @SerializedName(COLUMN_NAME_ID)
     @Expose
     public String id;
@@ -30,17 +34,6 @@ public class CategoryData {
     @SerializedName(COLUMN_NAME_NAME)
     @Expose
     public String name;
-
-    public CategoryData(String id, String count, String description, String name) {
-        this.id = id;
-        this.count = count;
-        this.description = description;
-        this.name = name;
-    }
-
-    public CategoryData(String name) {
-        this.name = name;
-    }
 
     public String getId() {
         if (id == null) {

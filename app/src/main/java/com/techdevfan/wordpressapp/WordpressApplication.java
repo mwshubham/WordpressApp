@@ -4,9 +4,10 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
-import com.squareup.leakcanary.LeakCanary;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
 
 /**
  * Created by shubham on 22/7/17.
@@ -21,11 +22,16 @@ public class WordpressApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
-        Stetho.initializeWithDefaults(this);
+        Realm.init(this);
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
+        //        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        LeakCanary.install(this);
     }
 }

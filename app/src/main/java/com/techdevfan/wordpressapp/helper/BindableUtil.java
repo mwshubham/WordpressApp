@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.techdevfan.wordpressapp.R;
 import com.bumptech.glide.Glide;
+import com.techdevfan.wordpressapp.R;
 
 /**
  * Created by shubham on 23/7/17.

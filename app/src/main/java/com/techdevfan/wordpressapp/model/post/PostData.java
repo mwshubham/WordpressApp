@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 import static com.techdevfan.wordpressapp.constant.ApplicationConstant.MAX_READ_TIME;
 import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_AUTHOR;
 import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEntry.COLUMN_NAME_CONTENT;
@@ -33,7 +37,7 @@ import static com.techdevfan.wordpressapp.database.contract.PostContract.PostEnt
  * SAME CLASS IS USED FOR PAGE AS WELL
  * Created by shubham on 22/7/17.
  */
-public class PostData {
+public class PostData extends RealmObject {
 
     public static String TYPE_POST = "post";
     public static String TYPE_PAGE = "page";
@@ -41,6 +45,7 @@ public class PostData {
     @SuppressWarnings("unused")
     private static final String TAG = "PostData";
 
+    @PrimaryKey
     @SerializedName(COLUMN_NAME_ID)
     @Expose
     public String id;
@@ -81,28 +86,16 @@ public class PostData {
     @Expose
     public String featuredImageThumbnailStandard;
 
+    @Ignore
     @SerializedName("categories")
     @Expose
     public List<String> categories = null;
 
+    @Ignore
     @SerializedName("tags")
     @Expose
     public List<String> tags = null;
 
-    public PostData(String id, String date, String type, TitleData title, ContentData content, ExcerptData excerpt, String author, String link, String featuredImageFull, String featuredImageThumbnailStandard, List<String> categories, List<String> tags) {
-        this.id = id;
-        this.date = date;
-        this.type = type;
-        this.title = title;
-        this.content = content;
-        this.excerpt = excerpt;
-        this.author = author;
-        this.link = link;
-        this.featuredImageFull = featuredImageFull;
-        this.featuredImageThumbnailStandard = featuredImageThumbnailStandard;
-        this.categories = categories;
-        this.tags = tags;
-    }
 
     public String getId() {
         if (id == null) {
@@ -147,7 +140,7 @@ public class PostData {
 
     public TitleData getTitle() {
         if (title == null) {
-            return new TitleData(null);
+            return new TitleData();
         }
 
         return title;
@@ -155,7 +148,7 @@ public class PostData {
 
     public ContentData getContent() {
         if (content == null) {
-            return new ContentData(null);
+            return new ContentData();
         }
 
         return content;
@@ -163,7 +156,7 @@ public class PostData {
 
     public ExcerptData getExcerpt() {
         if (excerpt == null) {
-            return new ExcerptData(null);
+            return new ExcerptData();
         }
 
         return excerpt;

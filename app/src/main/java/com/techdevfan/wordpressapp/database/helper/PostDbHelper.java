@@ -2,15 +2,10 @@ package com.techdevfan.wordpressapp.database.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.techdevfan.wordpressapp.model.post.ContentData;
-import com.techdevfan.wordpressapp.model.post.ExcerptData;
 import com.techdevfan.wordpressapp.model.post.PostData;
-import com.techdevfan.wordpressapp.model.post.TitleData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -77,57 +72,57 @@ public class PostDbHelper extends BaseSQLliteOpenHelper {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 
-    public synchronized List<PostData> getAllPost(String typePost) {
-        SQLiteDatabase readableDatabase = getReadableDatabase();
-        Cursor cursor = null;
-        List<PostData> postDataList = new ArrayList<>();
-        try {
-            cursor = readableDatabase.query(TABLE_NAME
-                    , new String[]{
-                            COLUMN_NAME_ID
-                            , COLUMN_NAME_DATE
-                            , COLUMN_NAME_TITLE
-                            , COLUMN_NAME_CONTENT
-                            , COLUMN_NAME_EXCEPT
-                            , COLUMN_NAME_AUTHOR
-                            , COLUMN_NAME_FEATURED_IMAGE_FULL
-                            , COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD
-                            , COLUMN_NAME_TYPE
-                            , COLUMN_NAME_LINK
-                    }
-                    , null
-                    , null
-                    , null
-                    , null
-                    , null);
-
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        postDataList.add(
-                                new PostData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_DATE))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TYPE))
-                                        , new TitleData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TITLE)))
-                                        , new ContentData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_CONTENT)))
-                                        , new ExcerptData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TITLE)))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AUTHOR))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_LINK))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_FEATURED_IMAGE_FULL))
-                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD))
-                                        , null
-                                        , null
-
-                                ));
-                    } while (cursor.moveToNext());
-                }
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            close();
-        }
-        return postDataList;
-    }
+//    public synchronized List<PostData> getAllPost(String typePost) {
+//        SQLiteDatabase readableDatabase = getReadableDatabase();
+//        Cursor cursor = null;
+//        List<PostData> postDataList = new ArrayList<>();
+//        try {
+//            cursor = readableDatabase.query(TABLE_NAME
+//                    , new String[]{
+//                            COLUMN_NAME_ID
+//                            , COLUMN_NAME_DATE
+//                            , COLUMN_NAME_TITLE
+//                            , COLUMN_NAME_CONTENT
+//                            , COLUMN_NAME_EXCEPT
+//                            , COLUMN_NAME_AUTHOR
+//                            , COLUMN_NAME_FEATURED_IMAGE_FULL
+//                            , COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD
+//                            , COLUMN_NAME_TYPE
+//                            , COLUMN_NAME_LINK
+//                    }
+//                    , null
+//                    , null
+//                    , null
+//                    , null
+//                    , null);
+//
+//            if (cursor != null) {
+//                if (cursor.moveToFirst()) {
+//                    do {
+//                        postDataList.add(
+//                                new PostData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_ID))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_DATE))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TYPE))
+//                                        , new TitleData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TITLE)))
+//                                        , new ContentData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_CONTENT)))
+//                                        , new ExcerptData(cursor.getString(cursor.getColumnIndex(COLUMN_NAME_TITLE)))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_AUTHOR))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_LINK))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_FEATURED_IMAGE_FULL))
+//                                        , cursor.getString(cursor.getColumnIndex(COLUMN_NAME_FEATURED_IMAGE_THUMBNAIL_STANDARD))
+//                                        , null
+//                                        , null
+//
+//                                ));
+//                    } while (cursor.moveToNext());
+//                }
+//            }
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//            close();
+//        }
+//        return postDataList;
+//    }
 }

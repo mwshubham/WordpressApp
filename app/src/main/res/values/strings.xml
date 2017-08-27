@@ -32,5 +32,6 @@
     <!--EMPTY CONTENT-->
     <string name="favorite_empty_container_title">No Data Found</string>
     <string name="favorite_empty_container_subtitle">May be go back and start reading !</string>
+    <string name="title_activity_test">TestActivity</string>
     <!--CATEGORY-->
 </resources>

@@ -12,8 +12,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.techdevfan.wordpressapp.R;
 import com.techdevfan.wordpressapp.connection.ApiConnection;
 import com.techdevfan.wordpressapp.connection.CustomObserver;
-import com.techdevfan.wordpressapp.database.helper.CategoryDbHelper;
-import com.techdevfan.wordpressapp.database.helper.TagDbHelper;
 import com.techdevfan.wordpressapp.helper.SharedPreferenceHelper;
 import com.techdevfan.wordpressapp.model.CategoryData;
 import com.techdevfan.wordpressapp.model.ConfigData;
@@ -26,6 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
@@ -38,19 +37,13 @@ public class SplashActivity extends BaseActivity {
     @SuppressWarnings("unused")
     private static final String TAG = "SplashActivity";
     private boolean doubleBackToExitPressedOnce = false;
-    private CategoryDbHelper categoryDbHelper;
-    private TagDbHelper tagDbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_splash);
-
-        categoryDbHelper = CategoryDbHelper.getInstance(this);
-        tagDbHelper = TagDbHelper.getInstance(this);
-
-
         Log.i(TAG, "token: " + FirebaseInstanceId.getInstance().getToken());
+
         ApiConnection.getConfigData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ConfigData>(this) {
 
             @Override
@@ -91,20 +84,36 @@ public class SplashActivity extends BaseActivity {
 
 
     private void loadCategoryNTagData() {
+
         Observable<List<TagData>> tagListObservable = ApiConnection.getTags(this).subscribeOn(Schedulers.io());
         Observable<List<CategoryData>> categoryListObservable = ApiConnection.getCategories(this).subscribeOn(Schedulers.io());
-        Observable.zip(tagListObservable, categoryListObservable, (tagDatas, categoryDatas) -> {
-
+        Observable.zip(tagListObservable, categoryListObservable, (List<TagData> tagDatas, List<CategoryData> categoryDatas) -> {
             for (CategoryData eachCategoryData : categoryDatas) {
                 if ((SharedPreferenceHelper.getSharedPreferenceBoolean(SplashActivity.this, SharedPreferenceHelper.KEY_IS_HIDE_CATEGORY_WITH_NO_POST, false) && eachCategoryData.getCountInt() == 0)) {
                     continue;
                 }
-                categoryDbHelper.insert(eachCategoryData);
+                Realm realm = null;
+                try {
+                    realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(realm1 -> realm1.insertOrUpdate(eachCategoryData));
+                } finally {
+                    if (realm != null) {
+                        realm.close();
+                    }
+                }
             }
 
             for (TagData eachTagData : tagDatas) {
                 if ((SharedPreferenceHelper.getSharedPreferenceBoolean(SplashActivity.this, SharedPreferenceHelper.KEY_IS_TAGS_ENABLED, false))) {
-                    tagDbHelper.insert(eachTagData);
+                    Realm realm = null;
+                    try {
+                        realm = Realm.getDefaultInstance();
+                        realm.executeTransaction(realm1 -> realm1.insertOrUpdate(eachTagData));
+                    } finally {
+                        if (realm != null) {
+                            realm.close();
+                        }
+                    }
                 }
             }
             return true;
@@ -134,8 +143,4 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

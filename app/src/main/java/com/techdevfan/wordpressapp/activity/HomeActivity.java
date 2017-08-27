@@ -8,20 +8,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.techdevfan.wordpressapp.R;
-import com.techdevfan.wordpressapp.adapter.NavigationRvAdapter;
 import com.techdevfan.wordpressapp.connection.ApiConnection;
 import com.techdevfan.wordpressapp.connection.CustomObserver;
-import com.techdevfan.wordpressapp.database.helper.CategoryDbHelper;
-import com.techdevfan.wordpressapp.database.helper.PostDbHelper;
 import com.techdevfan.wordpressapp.databinding.ActivityHomeBinding;
 import com.techdevfan.wordpressapp.fragment.PostListFragment;
-import com.techdevfan.wordpressapp.handler.ItemNavigationRvHandler;
 import com.techdevfan.wordpressapp.helper.EnumHelper;
 import com.techdevfan.wordpressapp.helper.Helper;
 import com.techdevfan.wordpressapp.model.CategoryData;
@@ -30,11 +23,11 @@ import com.techdevfan.wordpressapp.model.post.PostData;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
@@ -51,10 +44,9 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         setSupportActionBar(mBinding.toolbar);
-
         loadPosts(1);
         setUpViewPager();
-        setUpNavigationDrawer();
+//        setUpNavigationDrawer();
 
         // fixme
 
@@ -68,7 +60,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void loadPosts(int page) {
-        PostDbHelper postDbHelper = PostDbHelper.getInstance(this);
+//        PostDbHelper postDbHelper = PostDbHelper.getInstance(this);
         ApiConnection.getPosts(this, null, null, page).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<PostData>>(this) {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -78,28 +70,19 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onNext(@NonNull List<PostData> postDataList) {
                 super.onNext(postDataList);
-                Log.d(TAG, "onNext: " + postDataList.size());
-                Observable.fromCallable(() -> {
-                    postDbHelper.insertAll(postDataList);
-                    return true;
-                }).subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<Boolean>(HomeActivity.this) {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        mCompositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        super.onComplete();
+                Realm realm = null;
+                try {
+                    realm = Realm.getDefaultInstance();
+                    realm.executeTransaction(realm1 -> {
+                        realm1.insertOrUpdate(postDataList);
+                    });
+                } finally {
+                    if (realm != null) {
+                        realm.close();
                         Intent intent = new Intent(WP_POST_UPDATED);
                         LocalBroadcastManager.getInstance(HomeActivity.this).sendBroadcast(intent);
                     }
-                });
+                }
             }
 
             @Override
@@ -119,7 +102,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onComplete() {
                 super.onComplete();
-//                loadPosts(page + 1);
+                loadPosts(page + 1);
             }
         });
     }
@@ -153,76 +136,95 @@ public class HomeActivity extends BaseActivity {
 //    }
 
     private void setUpViewPager() {
-        CategoryDbHelper categoryDbHelper = CategoryDbHelper.getInstance(this);
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(PostListFragment.newInstance("", EnumHelper.IdType.CATEGORY_ID), getString(R.string.latest));
-
-        Observable.fromCallable(categoryDbHelper::getAll).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<CategoryData>>(HomeActivity.this) {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                mCompositeDisposable.add(d);
-            }
-
-            @Override
-            public void onNext(List<CategoryData> categoryDatas) {
-                for (int categoryPos = 0; categoryPos < categoryDatas.size(); categoryPos++) {
-                    adapter.addFragment(PostListFragment.newInstance(categoryDatas.get(categoryPos).getId(), EnumHelper.IdType.CATEGORY_ID), categoryDatas.get(categoryPos).getName());
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(realm1 -> {
+                List<CategoryData> categoryDataList = realm1.where(CategoryData.class).findAll();
+                for (int categoryPos = 0; categoryPos < categoryDataList.size(); categoryPos++) {
+                    adapter.addFragment(PostListFragment.newInstance(categoryDataList.get(categoryPos).getId(), EnumHelper.IdType.CATEGORY_ID), categoryDataList.get(categoryPos).getName());
+                    mBinding.viewPager.setAdapter(adapter);
+                    mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
                 }
+            });
+        } finally {
+            if (realm != null) {
+                realm.close();
             }
-
-            @Override
-            public void onComplete() {
-                super.onComplete();
-                mBinding.viewPager.setAdapter(adapter);
-                mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
-                //        mBinding.viewPager.setOffscreenPageLimit(2);
-            }
-        });
+        }
+//        Observable.fromCallable(() -> {
+//            CategoryDbHelper categoryDbHelper = CategoryDbHelper.getInstance(this);
+//            return categoryDbHelper.getAll();
+//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<CategoryData>>(HomeActivity.this) {
+//            @Override
+//            public void onSubscribe(@NonNull Disposable d) {
+//                mCompositeDisposable.add(d);
+//            }
+//
+//            @Override
+//            public void onNext(List<CategoryData> categoryDatas) {
+//                for (int categoryPos = 0; categoryPos < categoryDatas.size(); categoryPos++) {
+////                    adapter.addFragment(PostListFragment.newInstance(categoryDatas.get(categoryPos).getId(), EnumHelper.IdType.CATEGORY_ID), categoryDatas.get(categoryPos).getName());
+//                }
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                super.onComplete();
+//                mBinding.viewPager.setAdapter(adapter);
+//                mBinding.tabLayout.setupWithViewPager(mBinding.viewPager);
+//                //        mBinding.viewPager.setOffscreenPageLimit(2);
+//            }
+//        });
     }
 
-    private void setUpNavigationDrawer() {
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
+//    private void setUpNavigationDrawer() {
+//        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar, R.string.drawer_open, R.string.drawer_close) {
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                super.onDrawerClosed(drawerView);
+//            }
+//
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                super.onDrawerOpened(drawerView);
+//            }
+//        };
+//
+//        mBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
+//        actionBarDrawerToggle.syncState();
+//
+//
+//        Observable.fromCallable(() -> {
+//            CategoryDbHelper categoryDbHelper = CategoryDbHelper.getInstance(this);
+//            return categoryDbHelper.getAll();
+//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<CategoryData>>(HomeActivity.this) {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                mCompositeDisposable.add(d);
+//            }
+//
+//            @Override
+//            public void onNext(List<CategoryData> categoryDataList) {
+//                super.onNext(categoryDataList);
+//                List<CategoryData> tempCategoryDataList = new ArrayList<>();
+//                CategoryData latestCategoryData = new CategoryData(getString(R.string.latest));
+//                tempCategoryDataList.add(latestCategoryData);
+//                tempCategoryDataList.addAll(categoryDataList);
+//                mBinding.categoriesRecyclerView.setAdapter(new NavigationRvAdapter(HomeActivity.this, EnumHelper.NavItemType.TYPE_CATEGORY, tempCategoryDataList, null));
+//            }
+//        });
+//
+//        addFavoriteNavItem();
+//    }
 
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-
-        mBinding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-
-        CategoryDbHelper categoryDbHelper = CategoryDbHelper.getInstance(this);
-        Observable.fromCallable(categoryDbHelper::getAll).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<List<CategoryData>>(HomeActivity.this) {
-            @Override
-            public void onSubscribe(Disposable d) {
-                mCompositeDisposable.add(d);
-            }
-
-            @Override
-            public void onNext(List<CategoryData> categoryDataList) {
-                super.onNext(categoryDataList);
-                List<CategoryData> tempCategoryDataList = new ArrayList<>();
-                CategoryData latestCategoryData = new CategoryData(getString(R.string.latest));
-                tempCategoryDataList.add(latestCategoryData);
-                tempCategoryDataList.addAll(categoryDataList);
-                mBinding.categoriesRecyclerView.setAdapter(new NavigationRvAdapter(HomeActivity.this, EnumHelper.NavItemType.TYPE_CATEGORY, tempCategoryDataList, null));
-            }
-        });
-
-        addFavoriteNavItem();
-    }
-
-    private void addFavoriteNavItem() {
-        mBinding.itemFavorite.setName(getString(R.string.favorite));
-        mBinding.itemFavorite.setPosition(-1);
-        mBinding.itemFavorite.setHandler(new ItemNavigationRvHandler(this, EnumHelper.NavItemType.TYPE_FAVORITE, null));
-    }
+//    private void addFavoriteNavItem() {
+//        mBinding.itemFavorite.setName(getString(R.string.favorite));
+//        mBinding.itemFavorite.setPosition(-1);
+//        mBinding.itemFavorite.setHandler(new ItemNavigationRvHandler(this, EnumHelper.NavItemType.TYPE_FAVORITE, null));
+//    }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
